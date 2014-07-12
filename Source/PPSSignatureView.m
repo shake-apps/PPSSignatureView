@@ -2,7 +2,7 @@
 #import "UIImage+ChangeColor.h"
 
 #define             STROKE_WIDTH_MIN 0.002 // Stroke width determined by touch velocity
-#define             STROKE_WIDTH_MAX 0.010
+#define             STROKE_WIDTH_MAX 0.025
 #define       STROKE_WIDTH_SMOOTHING 0.5   // Low pass filter alpha
 
 #define           VELOCITY_CLAMP_MIN 20
@@ -13,7 +13,7 @@
 #define             MAXIMUM_VERTECES 100000
 
 
-static GLKVector3 StrokeColor = { 0, 0, 0 };
+static GLKVector3 StrokeColor = { 1, 1, 1 };
 
 // Vertex structure containing 3D point and color
 struct PPSSignaturePoint
@@ -173,7 +173,7 @@ static PPSSignaturePoint ViewPointToGL(CGPoint viewPoint, CGRect bounds, GLKVect
 
 - (void)drawRect:(CGRect)rect
 {
-    glClearColor(1, 1, 1, 1.0f);
+    glClearColor(0.1, 0.1, 0.1, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     [effect prepareToDraw];
@@ -197,7 +197,7 @@ static PPSSignaturePoint ViewPointToGL(CGPoint viewPoint, CGRect bounds, GLKVect
     dotsLength = 0;
     self.hasSignature = NO;
     
-    [[NSs]]
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"initSignHere" object:nil];
 	
 	[self setNeedsDisplay];
 }
@@ -209,7 +209,7 @@ static PPSSignaturePoint ViewPointToGL(CGPoint viewPoint, CGRect bounds, GLKVect
 	if (!self.hasSignature)
 		return nil;
     
-    return [self snapshot];
+    return [[[self snapshot] imageWithOverlayColor:[UIColor blackColor]] resizedImageToFitInSize:CGSizeMake(640, 100) scaleIfSmaller:YES];
 }
 
 
@@ -293,6 +293,7 @@ static PPSSignaturePoint ViewPointToGL(CGPoint viewPoint, CGRect bounds, GLKVect
         addVertex(&length, previousVertex);
 		
 		self.hasSignature = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissSignHere" object:nil];
         
     } else if ([p state] == UIGestureRecognizerStateChanged) {
         
