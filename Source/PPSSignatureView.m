@@ -1,4 +1,5 @@
 #import "PPSSignatureView.h"
+#import "UIImage+ChangeColor.h"
 
 #define             STROKE_WIDTH_MIN 0.002 // Stroke width determined by touch velocity
 #define             STROKE_WIDTH_MAX 0.010
@@ -195,6 +196,8 @@ static PPSSignaturePoint ViewPointToGL(CGPoint viewPoint, CGRect bounds, GLKVect
     length = 0;
     dotsLength = 0;
     self.hasSignature = NO;
+    
+    [[NSs]]
 	
 	[self setNeedsDisplay];
 }
